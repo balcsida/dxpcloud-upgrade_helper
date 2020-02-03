@@ -1,0 +1,4 @@
+backups/data/*.tgz
+backups/db/*.tgz
+backups/db/*.sql
+database_data/*
