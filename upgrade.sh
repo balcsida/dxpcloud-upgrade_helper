@@ -97,7 +97,10 @@ if test -f "$UPGRADED_DUMP"; then
     docker-compose kill
     docker-compose rm -f
     echo "Compress lportal.sql..."
-    tar -czvf backups/database.tgz upgrade_output/lportal.sql
+    cd upgrade_output
+    tar -czvf database.tgz ./lportal.sql
+    mv database.tgz ../backups/database.tgz
+    cd ..
     echo "Cleaning up..."
     rm -f backups/lportal.sql
     rm -f backups/database_original.tgz
