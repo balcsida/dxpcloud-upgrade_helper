@@ -29,12 +29,8 @@ fi
 
 TOKEN=$(awk -F "=" '/token/ {print $2}' $LCP_CONFIG_FILE)
 
-# Test if token is usable
-# response=$(curl https://api.liferay.cloud/user -H 'Content-Type: application/json' -H "dxpcloud-authorization: Bearer $TOKEN" --write-out %{http_code} --silent --output /dev/null servername)
-# if [ $response == 403 ]; then
-#     lcp login
-#     TOKEN=$(awk -F "=" '/token/ {print $2}' $LCP_CONFIG_FILE)
-# fi
+# Create backups directory with correct permissions
+mkdir -m a=rwx -p backups 
 
 # Download latest database and volume backup
 echo 'Getting latest backup ID...'
