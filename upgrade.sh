@@ -82,6 +82,7 @@ fi
 if [ ! -f liferay_scripts/upgrade_done ]; then
     echo 'Starting services with docker-compose...'
     mkdir -p upgrade_output
+    chmod -R 777 liferay_scripts
     docker-compose up -d --force-recreate --remove-orphans
 
     echo 'Performing upgrade...'
