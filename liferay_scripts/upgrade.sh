@@ -18,6 +18,5 @@ chmod +x $LIFERAY_UPGRADE_HOME/db_upgrade.sh
 
 $LIFERAY_UPGRADE_HOME/db_upgrade.sh -j "-Dfile.encoding=UTF-8 -Duser.country=US -Duser.language=en -Duser.timezone=GMT -Xmx5g"
 
-touch /lcp-container/script/common/upgrade_done
-
+touch /lcp-container/script/local/upgrade_done
 rm -f /usr/local/bin/entrypoint-*
