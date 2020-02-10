@@ -35,9 +35,9 @@ lcp login
 # Check if LCP config file exists
 LCP_CONFIG_FILE=$HOME/.lcp
 if test -f "$LCP_CONFIG_FILE"; then
-    echo "$LCP_CONFIG_FILE exists"
+    echo $LCP_CONFIG_FILE' exists'
 else
-    echo "$LCP_CONFIG_FILE doesn't exist! Exciting..."
+    echo $LCP_CONFIG_FILE' does not exist!'
     exit 1;
 fi
 
@@ -48,25 +48,25 @@ mkdir -m a=rwx -p backups
 
 # Download latest database and volume backup
 echo 'Getting latest backup ID...'
-LAST_BACKUP_ID=$(curl -s "https://backup-$PROJECT_NAME-prd.lfr.cloud/backup/list?limit=1" -H "dxpcloud-authorization: Bearer $TOKEN" | jq --raw-output '.backups[0].backupId')
+LAST_BACKUP_ID=$(curl -s 'https://backup-'$PROJECT_NAME'-prd.lfr.cloud/backup/list?limit=1' -H 'dxpcloud-authorization: Bearer '$TOKEN | jq --raw-output '.backups[0].backupId')
 echo 'Last backup ID: ' $LAST_BACKUP_ID
-echo 'Downloading database backup...'
-curl "https://backup-$PROJECT_NAME-prd.lfr.cloud/backup/download/database/$LAST_BACKUP_ID" \
-  -X 'POST' \
-  -H "authorization: Bearer $TOKEN" \
-  -o backups/database_original.tgz
-echo 'Download completed!'
 
-echo 'Downloading volume backup in the background...'
-nohup curl "https://backup-$PROJECT_NAME-prd.lfr.cloud/backup/download/volume/$LAST_BACKUP_ID" \
+echo 'Downloading database backup...'
+curl -# 'https://backup-'$PROJECT_NAME'-prd.lfr.cloud/backup/download/database/'$LAST_BACKUP_ID \
   -X 'POST' \
-  -H "authorization: Bearer $TOKEN" \
+  -H 'authorization: Bearer '$TOKEN \
+  -o backups/database_original.tgz
+
+echo 'Downloading volume backup in background...'
+nohup curl -# 'https://backup-'$PROJECT_NAME'-prd.lfr.cloud/backup/download/volume/'$LAST_BACKUP_ID \
+    -X 'POST' \
+    -H 'authorization: Bearer '$TOKEN \
   -o backups/volume.tgz
 
 # Extract database dump, delete if successful
 echo 'Extracting database backup...'
 if test -f backups/database_original.tgz; then
-    tar zxvf backups/database_original.tgz -C backups
+    tar zxf backups/database_original.tgz -C backups
     if [ $? -eq 0 ]; then
         echo 'Extracting successful!'
         rm -f backups/database_original.tgz
@@ -81,7 +81,7 @@ fi
 
 if [ ! -f liferay_scripts/upgrade_done ]; then
     echo 'Starting services with docker-compose...'
-    mkdir upgrade_output
+    mkdir -p upgrade_output
     docker-compose up -d --force-recreate --remove-orphans
 
     echo 'Performing upgrade...'
@@ -102,11 +102,11 @@ docker-compose exec database mysqldump -udxpcloud -pdxpcloud --databases --add-d
 
 UPGRADED_DUMP=upgrade_output/lportal.sql
 if test -f "$UPGRADED_DUMP"; then
-    echo "$UPGRADED_DUMP exist"
-    echo "Kill and remove services..."
+    echo $UPGRADED_DUMP' exist'
+    echo 'Kill and remove services...'
     docker-compose kill
     docker-compose rm -f
-    echo "Compress lportal.sql..."
+    echo 'Compress lportal.sql...'
     cd upgrade_output
     tar -czvf database.tgz ./lportal.sql
     mv database.tgz ../backups/database.tgz
@@ -114,12 +114,12 @@ if test -f "$UPGRADED_DUMP"; then
     echo 'Cleaning up...'
     cleanup
 else
-    echo "Upgrade dump doesn't exists..."
+    echo 'Upgraded dump does not exists...'
     exit 1;
 fi
 
 echo "Uploading database..."
-curl -X POST \
+curl -# -X POST \
   https://backup-$PROJECT_NAME-prd.lfr.cloud/backup/upload \
   -H 'Content-Type: multipart/form-data' \
   -H 'dxpcloud-authorization: Bearer '$TOKEN \
