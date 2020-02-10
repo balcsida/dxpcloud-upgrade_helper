@@ -61,7 +61,9 @@ echo 'Downloading volume backup in background...'
 nohup curl -# 'https://backup-'$PROJECT_NAME'-prd.lfr.cloud/backup/download/volume/'$LAST_BACKUP_ID \
     -X 'POST' \
     -H 'authorization: Bearer '$TOKEN \
-  -o backups/volume.tgz
+    -o backups/volume.tgz &
+
+PID_CURL_VOLUME=$!
 
 # Extract database dump, delete if successful
 echo 'Extracting database backup...'
@@ -118,6 +120,9 @@ else
     echo 'Upgraded dump does not exists...'
     exit 1;
 fi
+
+echo 'Check if volume download is still in progress...'
+fg $PID_CURL_VOLUME
 
 echo "Uploading database..."
 curl -# -X POST \
