@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -o errexit
+
 PROJECT_NAME=$1
 
 function check_command_exists() {

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -o errexit
+
 LIFERAY_HOME=/opt/liferay
 
 curl -o $LIFERAY_HOME/tools.zip http://files.liferay.int/private/ee/portal/7.2.10.1/liferay-dxp-tools-7.2.10.1-sp1-20191007154602574.zip
