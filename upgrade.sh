@@ -11,10 +11,22 @@ function check_command_exists() {
     }
 }
 
+function cleanup() {
+    docker-compose kill
+    docker-compose rm -f
+    rm -rf backups
+    rm -f upgrade_output/lportal.sql
+    rm -f liferay_scripts/upgrade_done
+    rm -rf upgrade_output
+}
+
 # Check if required commands are available
 check_command_exists lcp
 check_command_exists jq
 check_command_exists docker-compose
+
+# Pre-cleanup
+cleanup
 
 # Try to Login user
 echo 'Please Log In to DXP Cloud Console'
@@ -99,12 +111,8 @@ if test -f "$UPGRADED_DUMP"; then
     tar -czvf database.tgz ./lportal.sql
     mv database.tgz ../backups/database.tgz
     cd ..
-    echo "Cleaning up..."
-    rm -f backups/lportal.sql
-    rm -f backups/database_original.tgz
-    rm -f upgrade_output/lportal.sql
-    rm -f liferay_scripts/upgrade_done
-    rm -rf upgrade_output
+    echo 'Cleaning up...'
+    cleanup
 else
     echo "Upgrade dump doesn't exists..."
     exit 1;
