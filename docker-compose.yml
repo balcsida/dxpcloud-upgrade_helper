@@ -26,6 +26,9 @@ services:
     volumes:
       - type: bind
         source: ./liferay_scripts
-        target: /lcp-container/script/common
+        target: /lcp-container/script/local
+      - type: bind
+        source: ./liferay_hotfix
+        target: /lcp-container/hotfix/local
     depends_on:
       - database

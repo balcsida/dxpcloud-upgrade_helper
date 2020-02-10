@@ -1,3 +1,4 @@
 backups/*.tgz
 backups/*.sql
 liferay_scripts/upgrade_done
+hotfix/*.zip
