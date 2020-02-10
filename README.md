@@ -1,6 +1,14 @@
 ## DXP Cloud Upgrade Helper
 
-This repository help
+This tool helps you to upgrade your DXP Cloud environment to 7.2
+
+## Features
+
+* Authentication using `lcp` command line
+* Downloading volume backup while upgrading (Seems Faster™)
+* Database upgrade
+* Supports Liferay hotfixes
+* Upload backup
 
 ## Usage
 
