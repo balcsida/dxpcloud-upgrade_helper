@@ -64,7 +64,7 @@ else
         curl -# 'https://backup-'$PROJECT_NAME'-prd.lfr.cloud/backup/download/volume/'$LAST_BACKUP_ID \
         -X 'POST' \
         -H 'authorization: Bearer '$TOKEN \
-        -o backups/volume.tgz &
+        -o backups/volume.tgz
     fi
 
     # Extract database dump, delete if successful
@@ -127,9 +127,6 @@ else
         exit 1;
     fi
 fi
-
-echo 'Check if volume download is still in progress...'
-fg $PID_CURL_VOLUME
 
 echo "Uploading new backup..."
 curl -X POST \
