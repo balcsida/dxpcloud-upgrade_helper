@@ -21,6 +21,6 @@ printf "indexReadOnly=true" $LIFERAY_HOME/osgi/configs/com.liferay.portal.search
 
 chmod +x $LIFERAY_UPGRADE_HOME/db_upgrade.sh
 
-$LIFERAY_UPGRADE_HOME/db_upgrade.sh -j "-Dfile.encoding=UTF-8 -Duser.country=US -Duser.language=en -Duser.timezone=GMT -Xmx5g"
+$LIFERAY_UPGRADE_HOME/db_upgrade.sh -j "-Dfile.encoding=UTF-8 -Duser.country=US -Duser.language=en -Duser.timezone=GMT -Xmx10g"
 
 touch /lcp-container/script/local/upgrade_done
