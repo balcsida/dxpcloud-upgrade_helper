@@ -14,7 +14,6 @@ function check_command_exists() {
 function cleanup() {
     docker-compose kill
     docker-compose rm -f
-    rm -rf backups
     rm -f upgrade_output/lportal.sql
     rm -f liferay_scripts/upgrade_done
     rm -rf upgrade_output
@@ -24,9 +23,6 @@ function cleanup() {
 check_command_exists lcp
 check_command_exists jq
 check_command_exists docker-compose
-
-# Pre-cleanup
-cleanup
 
 # Try to Login user
 echo 'Please Log In to DXP Cloud Console'
