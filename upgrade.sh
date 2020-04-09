@@ -6,7 +6,7 @@ PROJECT_NAME=$1
 
 function check_command_exists() {
     command -v $1 >/dev/null 2>&1 || {
-        echo >&2 "$1 is not available.  Aborting."
+        echo >&2 "$1 is not available. Please install it, then rerun the command."
         exit 1
     }
 }
