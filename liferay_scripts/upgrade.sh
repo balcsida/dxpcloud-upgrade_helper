@@ -4,11 +4,14 @@ set -o errexit
 
 LIFERAY_HOME=/opt/liferay
 
-curl -o $LIFERAY_HOME/tools.zip http://files.liferay.int/private/ee/portal/7.2.10.1/liferay-dxp-tools-7.2.10.1-sp1-20191007154602574.zip
-unzip $LIFERAY_HOME/tools.zip
-rm -f $LIFERAY_HOME/tools.zip
+mkdir dbupgradeclient
+curl -o $LIFERAY_HOME/dbupgradeclient.zip https://repository.liferay.com/nexus/content/repositories/liferay-public-releases/com/liferay/com.liferay.portal.tools.db.upgrade.client/3.0.1/com.liferay.portal.tools.db.upgrade.client-3.0.1.zip
+unzip $LIFERAY_HOME/dbupgradeclient.zip -d dbupgradeclient
+rm -f $LIFERAY_HOME/dbupgradeclient.zip
 
-LIFERAY_UPGRADE_HOME=$LIFERAY_HOME/liferay-portal-tools-7.2.10.1-sp1
+LIFERAY_UPGRADE_HOME=$LIFERAY_HOME/dbupgradeclient
+chmod +x $LIFERAY_UPGRADE_HOME/*.sh
+ls $LIFERAY_UPGRADE_HOME
 
 printf "dir=../tomcat\nextra.lib.dirs=/bin\nglobal.lib.dir=/lib\nportal.dir=/webapps/ROOT\nserver.detector.server.id=tomcat" > $LIFERAY_UPGRADE_HOME/app-server.properties
 printf "jdbc.default.driverClassName=com.mysql.cj.jdbc.Driver\njdbc.default.url=jdbc:mysql://database/lportal?characterEncoding=UTF-8&dontTrackOpenResources=true&holdResultsOpenOverStatementClose=true&serverTimezone=GMT&useFastDateParsing=false&useUnicode=true\njdbc.default.username=dxpcloud\njdbc.default.password=dxpcloud" > $LIFERAY_UPGRADE_HOME/portal-upgrade-database.properties
