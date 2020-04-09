@@ -18,17 +18,17 @@ services:
         target: /upgrade_output
 
   liferay:
-    image: "liferaycloud/liferay-dxp:7.2.10-sp1-fp3-3.0.15"
+    image: "liferaycloud/liferay-dxp:7.2.10-sp1-fp4-3.0.18"
     environment:
       - LCP_PROJECT_ENVIRONMENT=local
-      - LIFERAY_JAVA_OPTS=-Xms2g -Xmx2g
+      - LIFERAY_JAVA_OPTS=-Xms8g -Xmx8g
       - LIFERAY_MODULE_PERIOD_FRAMEWORK_PERIOD_PROPERTIES_PERIOD_OSGI_PERIOD_CONSOLE=0.0.0.0:11311
     volumes:
       - type: bind
         source: ./liferay_scripts
         target: /lcp-container/script/local
-      - type: bind
-        source: ./liferay_hotfix
-        target: /lcp-container/hotfix/local
+      # - type: bind
+      #   source: ./liferay_hotfix
+      #   target: /lcp-container/hotfix/local
     depends_on:
       - database
