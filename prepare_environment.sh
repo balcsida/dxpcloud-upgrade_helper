@@ -25,5 +25,7 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 
+curl https://cdn.liferay.cloud/lcp/stable/latest/install.sh -fsSL | sudo bash
+
 sudo usermod -aG docker $USER
 echo "Please close this Shell window"
